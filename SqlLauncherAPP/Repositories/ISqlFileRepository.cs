@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace SqlLauncherAPP.Repositories
 {
-    internal interface ISqlFileRepository
+    public interface ISqlFileRepository
     {
+        //sql connection
+        // getall
+        //выполнение скриптов
+        //добавление записей в список
+
     }
 }
