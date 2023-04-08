@@ -4,40 +4,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace SqlLauncherAPP.Utilites
 {
     public class Scanner:IScanner
     {
-        string mypath = "D:\\ДЗ С#\\hschool\\hschool_beggining_csh\\OOPLearning\\checking\\Scripts";
+        string mypath = "D:\\Scripts";
         private readonly string ConnectionString = "server=localhost;database=Scripts;uid=root;password=123qwe4r5t6YY;";
-        //private readonly string SQL_CreateTable = @"create table if not exists TableScripts (
-        //  Id INT auto_increment not null, 
-        //  Name varchar(255) not null, 
-        //  primary key(id) 
-        //);";
+       
         private readonly string SQL_selectItems = "select name from TableScripts;";
         private readonly string SQL_AddItem = "insert into TableScripts (name) values (@name1);";
         // метод, который считает все названия скриптов с базы данных
         public void Start()
         {
-
-
             using (MySqlConnection connection = new MySqlConnection(ConnectionString))
             {
                 connection.Open();
 
                 try
-                {
-                    //MySqlConnection connection = Connection();
-                    //MySqlCommand command = new MySqlCommand(SQL_AddDataBase, connection);
-                    //command.CommandText = SQL_UseDatabase;
-                    //command.CommandText = SQL_CreateTable;
-                    //connection.Close();
-                    //GetScriptsName();    // названия скриптов с БД
-                    //ListNames();     //названия файлов с папки
-                    CheckFileNames(ListNames(), GetScriptsName(connection), connection);
-                    connection.Close();
+                {                   
+                    CheckFileNames(ListNames(), GetScriptsName(), connection);
+                    
                 }
                 catch (MySqlException ex)
                 {
@@ -46,13 +34,13 @@ namespace SqlLauncherAPP.Utilites
                 finally
                 {
                     Console.WriteLine("Добавлено в список ");
-                    //connection.Close();
+                    connection.Close();
                 }
             }
         }
-        private List<string> GetScriptsName(MySqlConnection connection)   // тянем  все названия скриптов с базы данных
+        private List<string> GetScriptsName()   // тянем  все названия скриптов с базы данных
         {
-            //MySqlConnection connection = Connection();
+            MySqlConnection connection = Connection();
             if (connection == null) throw new Exception("connection error");
             try
             {
@@ -101,7 +89,7 @@ namespace SqlLauncherAPP.Utilites
         }
         //метод добавления записи в базу данных
         private void AddScriptInTable(string scr, MySqlConnection connection)
-        {
+        {            
             var transaction = connection.BeginTransaction();
             if (scr == null) throw new ArgumentNullException(nameof(scr));
             if (connection == null) throw new Exception("Connection Error");
@@ -119,28 +107,21 @@ namespace SqlLauncherAPP.Utilites
                 Console.WriteLine(ex);
                 throw ex;
             }
-            //finally
-            //{
-            //    connection.Close();
-            //}
+            finally
+            {
+                connection.Close();
+            }
         }
         // метод считывания файла(скрипта) с папки и далее выполнение всех команд
         private void readSQLFile(string fileDirectory, MySqlConnection connection)
         {
             string result = File.ReadAllText($"{mypath}\\{fileDirectory}");
-            ProcessLoader(result, connection);
-
-        }
-        // метод выполнения команд со считанного файла
-        private void ProcessLoader(string text, MySqlConnection connection)
-        {
-            if (text == null) throw new ArgumentNullException(nameof(text));
-            //MySqlConnection connection = Connection();
+            if (result == null) throw new ArgumentNullException(nameof(result));           
             if (connection == null) throw new Exception("Connection Error");
             try
             {
-                MySqlCommand command = new MySqlCommand(text, connection);
-                //command.ExecuteNonQuery();
+                MySqlCommand command = new MySqlCommand(result, connection);
+                command.ExecuteNonQuery();
 
             }
             catch (MySqlException ex)
@@ -148,24 +129,48 @@ namespace SqlLauncherAPP.Utilites
                 Console.WriteLine(ex);
                 throw ex;
             }
-            //finally
-            //{
-            //    connection.Close();
-            //}
+            finally
+            {
+                connection.Close();
+            }
+            //ProcessLoader(result);
+
         }
-        //private MySqlConnection Connection()
-        //{
-        //    try
-        //    {
-        //        MySqlConnection connection = new MySqlConnection(ConnectionString);
-        //        connection.Open();
-        //        return connection;
-        //    }
-        //    catch (MySqlException ex)
-        //    {
-        //        return null;
-        //    }
-        //}
+        // метод выполнения команд со считанного файла
+        private void ProcessLoader(string text)
+        {
+            if (text == null) throw new ArgumentNullException(nameof(text));
+            MySqlConnection connection = Connection();
+            if (connection == null) throw new Exception("Connection Error");
+            try
+            {
+                MySqlCommand command = new MySqlCommand(text, connection);
+                command.ExecuteNonQuery();
+
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine(ex);
+                throw ex;
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+        private MySqlConnection Connection()
+        {
+            try
+            {
+                MySqlConnection connection = new MySqlConnection(ConnectionString);
+                connection.Open();
+                return connection;
+            }
+            catch (MySqlException ex)
+            {
+                return null;
+            }
+        }
 
     }
 }
