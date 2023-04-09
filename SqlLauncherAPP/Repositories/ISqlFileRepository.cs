@@ -11,11 +11,8 @@ namespace SqlLauncherAPP.Repositories
 {
     public interface ISqlFileRepository //<T> where T : DbConnection
     {
-
         void CheckAndCreateTable(MySqlConnection connection);
         List<string> GetAllFilesFromDB(MySqlConnection connection);
-        void AddNames(MySqlConnection connection, string text);            
-        
-
+        void AddNames(MySqlConnection connection, string text);          
     }
 }
