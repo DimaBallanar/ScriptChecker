@@ -171,6 +171,5 @@ namespace SqlLauncherAPP.Utilites
                 return null;
             }
         }
-
     }
 }
