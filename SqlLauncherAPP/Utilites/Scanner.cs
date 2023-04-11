@@ -146,7 +146,6 @@ namespace SqlLauncherAPP.Utilites
             {
                 MySqlCommand command = new MySqlCommand(text, connection);
                 command.ExecuteNonQuery();
-
             }
             catch (MySqlException ex)
             {
