@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SqlLauncherAPP.Repositories
+namespace SqlLauncherAPP.Utilites
 {
-    internal class SqlFileRepository:ISqlFileRepository
+    internal interface IScanner
     {
+        public void Start();
     }
 }
