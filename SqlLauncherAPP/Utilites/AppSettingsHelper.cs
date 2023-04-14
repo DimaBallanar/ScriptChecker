@@ -18,7 +18,7 @@ namespace SqlLauncherAPP.Utilites
         {
             return new ConfigurationBuilder()
                 .SetBasePath(AppContext.BaseDirectory)
-                .AddJsonFile("tsconfig1.json", optional: true, reloadOnChange: true)
+                .AddJsonFile("AppSettings.json", optional: true, reloadOnChange: true)
                 .Build();
         }
     }

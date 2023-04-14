@@ -87,19 +87,7 @@ namespace SqlLauncherAPP.Repositories
             }
         }
         
-        private MySqlConnection Connection()
-        {
-            try
-            {
-                MySqlConnection connection = new MySqlConnection(AppSettingsHelper.ConnectionString);
-                connection.Open();
-                return connection;
-            }
-            catch (MySqlException ex)
-            {
-                return null;   // бросить ex
-            }
-        }
+       
     }
 
 }

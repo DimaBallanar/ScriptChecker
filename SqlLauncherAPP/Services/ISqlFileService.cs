@@ -9,7 +9,7 @@ namespace SqlLauncherAPP.Services
     public interface ISqlFileService
     {
         public List<string> GetFilesFromFolder();
-        public void RunSqlFileScripts();
-
+        public void RunSqlFileScripts(string text);
+        public void Launcher();
     }
 }

@@ -1,4 +1,6 @@
-﻿using SqlLauncherAPP.Utilites;
+﻿using SqlLauncherAPP.Repositories;
+using SqlLauncherAPP.Services;
+using SqlLauncherAPP.Utilites;
 using System;
 
 namespace MyApp // Note: actual namespace depends on the project name.
@@ -7,8 +9,8 @@ namespace MyApp // Note: actual namespace depends on the project name.
     {
         static void Main(string[] args)
         {
-            IScanner scanner = new Scanner();
-            scanner.Start();
+            ISqlFileService scanner = new SqlFileService(new MySqlFileRepository());
+            scanner.Launcher();
         }
     }
 }
